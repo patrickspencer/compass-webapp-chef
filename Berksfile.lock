@@ -3,6 +3,7 @@ DEPENDENCIES
   nginx (~> 2.7.4)
   postgresql (~> 3.4.14)
   rbenv (~> 1.7.1)
+  rsyslog (= 1.7.0)
   webapp
     path: .
     metadata: true
@@ -25,7 +26,7 @@ GRAPH
     windows (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
-  mariadb (0.2.11)
+  mariadb (0.2.12)
     apt (>= 0.0.0)
     yum (>= 0.0.0)
     yum-epel (>= 0.0.0)
@@ -56,7 +57,8 @@ GRAPH
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
     ohai (>= 1.1)
-  rsyslog (1.14.0)
+  resource-control (0.1.1)
+  rsyslog (1.7.0)
   runit (1.5.14)
     build-essential (>= 0.0.0)
     yum (~> 3.0)

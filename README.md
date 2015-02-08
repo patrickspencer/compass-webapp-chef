@@ -1,57 +1,38 @@
-webapp Cookbook
+compass-webapp Cookbook
 ===============
-TODO: Enter the cookbook description here.
+This chef cookbook sets up the environment for the compass webapp.
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+To install this cookbook run the following commands
 
 `berks install`  
 `berks vendor cookbooks`  
-`add #{current_dir}/cookbooks/webapp/cookbooks/ to cookbook_path`  
-`sudo chef-client -z -o webapp`  
+`add #{current_dir}/cookbooks/compass-webapp/cookbooks/ to cookbook_path`  
+`sudo chef-client -z -o compass-webapp`  
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
+The following cookbooks are dependencies
 
-e.g.
-#### packages
-- `toaster` - webapp needs toaster to brown your bagel.
+nginx-2.7.4
+postgresql-3.4.14
+database-3.1.0
+rbenv-1.7.0
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
-
-e.g.
-#### webapp::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['webapp']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+None so far.
 
 Usage
 -----
 #### webapp::default
-TODO: Write usage instructions for each cookbook.
 
-e.g.
-Just include `webapp` in your node's `run_list`:
+Just include `compass-webapp` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[webapp]"
+    "recipe[compass-webapp]"
   ]
 }
 ```
@@ -70,4 +51,5 @@ e.g.
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Authors: Patrick Spencer
+License: MIT

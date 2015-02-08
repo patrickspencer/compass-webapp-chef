@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: webapp
+# Cookbook Name:: compass-webapp
 # Recipe:: default
 #
-# Copyright 2015, YOUR_COMPANY_NAME
+# Copyright 2015, Patrick Spencer
 #
-# All rights reserved - Do Not Redistribute
+# License: MIT
 #
 
 include_recipe "nginx"
