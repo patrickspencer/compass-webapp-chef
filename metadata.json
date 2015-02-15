@@ -8,8 +8,13 @@
   "platforms": {
   },
   "dependencies": {
+    "apt": ">= 0.0.0",
     "nginx": ">= 0.0.0",
-    "postgresql": ">= 0.0.0"
+    "postgresql": ">= 0.0.0",
+    "database": ">= 0.0.0",
+    "rbenv": ">= 0.0.0",
+    "nodejs": ">= 0.0.0",
+    "redis2": ">= 0.0.0"
   },
   "recommendations": {
   },
@@ -27,7 +32,7 @@
   },
   "recipes": {
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "source_url": "",
   "issues_url": ""
 }
