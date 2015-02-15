@@ -8,6 +8,7 @@
 #
 
 include_recipe "nginx"
+include_recipe "apt"
 include_recipe "database::postgresql"
 include_recipe "postgresql::client"
 include_recipe "postgresql::server"
@@ -16,36 +17,58 @@ include_recipe "rbenv::ruby_build"
 
 package "vim"
 package "git"
+package "libpq-dev"
+package "libsqlite3-dev"
+package "libssl-dev"
+package "telnet"
+package "postfix"
+package "curl"
+package "zlib1g-dev"
+package "libreadline-dev"
+package "libyaml-dev"
+package "sqlite3"
+package "libxml2-dev"
+package "libxslt1-dev"
+package "build-essential"
+package "tree"
 
-user "#{node.user.name}"
+user node['user']
+
+# set timezone
+bash "set timezone" do
+  code <<-EOH
+  echo 'US/Central' > /etc/timezone
+  dpkg-reconfigure -f noninteractive tzdata
+  EOH
+  not_if "date | grep -q 'CST'"
+end
+
+magic_shell_environment 'RAILS_ENV' do
+    value 'DEVELOPMENT'
+end
 
 rbenv_ruby "2.1.5" do
-  global true
+  global false
 end
 
 rbenv_gem "bundler" do
   ruby_version "2.1.5"
 end
 
-# execute 'bundle install' do
-#   cwd "#{node.app.web_dir}/app"
-#   not_if 'bundle check' # This is not run inside /myapp
-# end
-
-directory node.app.web_dir do
-  owner node.user.name
+directory node.app.dir do
+  owner node.user
   mode "0755"
   recursive true
 end
 
-directory "#{node.app.web_dir}/public" do
-  owner node.user.name
+directory "#{node.app.dir}/public" do
+  owner node['user']
   mode "0755"
   recursive true
 end
 
-directory "#{node.app.web_dir}/logs" do
-  owner node.user.name
+directory "#{node.app.dir}/logs" do
+  owner node['user']
   mode "0755"
   recursive true
 end
@@ -57,19 +80,28 @@ end
 
 # It's import to have this git resource before
 # the template resource below the references unicorn.rb
-git "#{node.app.web_dir}/app" do
+git "#{node.app.dir}/app" do
   repository "git://github.com/patrickspencer/compass-webapp"
   reference "master"
   action :sync
 end
 
-template "#{node.app.web_dir}/app/config/unicorn.rb" do
+template "#{node.app.dir}/app/config/unicorn.rb" do
   source "webapp/unicorn.rb.erb"
   mode "0644"
 end
 
+execute 'bundle install' do
+  cwd "#{node.app.dir}/app"
+  # not_if 'bundle check' # This is not run inside /myapp
+  environment 'ARCHFLAGS' => "-arch x86_64"
+end
 
-file "#{node.nginx.dir}/sites-enabled/default" do
+# file "#{node.nginx.dir}/sites-enabled/default" do
+#   action :delete
+# end
+
+file "#{node.nginx.dir}/sites-enabled/000-default" do
   action :delete
 end
 
@@ -77,11 +109,29 @@ nginx_site "#{node.app.name}.conf" do
   enable true
 end
 
-cookbook_file "#{node.app.web_dir}/public/index.html" do
+cookbook_file "#{node.app.dir}/public/index.html" do
   source "index.html"
   mode "0755"
-  owner node.user.name
+  owner node['user']
 end
+
+directory "#{node.app.dir}/pids" do
+  owner node['user']
+  mode '0644'
+  action :create
+end
+
+directory "#{node.app.dir}/log" do
+  owner node['user']
+  mode '0666'
+  action :create
+end
+
+# execute 'unicorn_rails -c config/unicorn.rb -D' do
+#   cwd "#{node.webdir}/app"
+#   # not_if 'bundle check' # This is not run inside /myapp
+#   user "compass-webapp"
+# end
 
 postgresql_database 'compass_db_prod' do
   connection(
@@ -92,7 +142,6 @@ postgresql_database 'compass_db_prod' do
   )
   action :create
 end
-
 
 postgresql_database 'compass_db_dev' do
   connection(
@@ -124,7 +173,7 @@ postgresql_database_user 'compass_db_user' do
   database_name 'compass_db_prod'
   database_name 'compass_db_dev'
   database_name 'compass_db_test'
-  password node['compass_db_user']['db_password']
+  password node['postgresql']['password']['postgres']
   privileges [:all]
   action :create
 end

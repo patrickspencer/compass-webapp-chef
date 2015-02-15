@@ -9,10 +9,10 @@ server {
     server_name localhost;
 
     # Application root, as defined previously
-    root <%= node.app.web_dir %>/public;
+    root <%= node.app.dir %>/public;
 
-    access_log <%= node.app.web_dir %>/logs/nginx_access.log;
-    error_log <%= node.app.web_dir %>/logs/nginx_error.log;
+    access_log <%= node.app.dir %>/logs/nginx_access.log;
+    error_log <%= node.app.dir %>/logs/nginx_error.log;
 
     try_files $uri/index.html $uri @app;
 

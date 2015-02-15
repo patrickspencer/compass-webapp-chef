@@ -1,7 +1,7 @@
 {
   "name": "compass-webapp",
   "description": "Installs/Configures webapp",
-  "long_description": "compass-webapp Cookbook": [\n    \"recipe[cookbook-webapp]\"\n  ]\n}\n```\n\nContributing\n------------\nTODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.\n\ne.g.\n1. Fork the repository on Github\n2. Create a named feature branch (like `add_component_x`)\n3. Write your change\n4. Write tests for your change (if applicable)\n5. Run the tests, ensuring they all pass\n6. Submit a Pull Request using Github\n\nLicense and Authors\n-------------------\nAuthors: TODO: List authors\n",
+  "long_description": "compass-webapp Cookbook: [\n    \"recipe[cookbook-webapp]\"\n  ]\n}\n```\n\nContributing\n------------\nTODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.\n\ne.g.\n1. Fork the repository on Github\n2. Create a named feature branch (like `add_component_x`)\n3. Write your change\n4. Write tests for your change (if applicable)\n5. Run the tests, ensuring they all pass\n6. Submit a Pull Request using Github\n\nLicense and Authors\n-------------------\nAuthors: TODO: List authors\n",
   "maintainer": "Patrick Spencer",
   "maintainer_email": "patrick.spencer@mail.mizzou.edu",
   "license": "MIT",
