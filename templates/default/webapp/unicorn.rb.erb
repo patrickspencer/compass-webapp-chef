@@ -7,14 +7,13 @@ working_directory "<%= node.app.dir %>/app"
 pid "<%= node.app.dir %>/pids/unicorn.pid"
 
 # Path to logs
-# stderr_path "/path/to/log/unicorn.log"
-# stdout_path "/path/to/log/unicorn.log"
-stderr_path "<%= node.app.dir %>/log/unicorn.log"
-stdout_path "<%= node.app.dir %>/log/unicorn.log"
+# stderr_path "/path/to/logs/unicorn.log"
+# stdout_path "/path/to/logs/unicorn.log"
+stderr_path "<%= node.app.dir %>/logs/unicorn.log"
+stdout_path "<%= node.app.dir %>/logs/unicorn.log"
 
 # Unicorn socket
 listen "/tmp/unicorn.<%= node.app.name %>.sock"
-listen "/tmp/unicorn.myapp.sock"
 
 # Number of processes
 # worker_processes 4

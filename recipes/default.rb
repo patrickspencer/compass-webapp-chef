@@ -14,6 +14,8 @@ include_recipe "postgresql::client"
 include_recipe "postgresql::server"
 include_recipe "rbenv::default"
 include_recipe "rbenv::ruby_build"
+include_recipe "nodejs"
+include_recipe "redis2"
 
 package "vim"
 package "git"
@@ -43,10 +45,6 @@ bash "set timezone" do
   not_if "date | grep -q 'CST'"
 end
 
-magic_shell_environment 'RAILS_ENV' do
-    value 'DEVELOPMENT'
-end
-
 rbenv_ruby "2.1.5" do
   global false
 end
@@ -70,6 +68,12 @@ end
 directory "#{node.app.dir}/logs" do
   owner node['user']
   mode "0755"
+  recursive true
+end
+
+directory node['redis']['dir'] do
+  owner node['user']
+  mode "0644"
   recursive true
 end
 
@@ -121,17 +125,18 @@ directory "#{node.app.dir}/pids" do
   action :create
 end
 
-directory "#{node.app.dir}/log" do
+# set unicorn config
+template "/etc/init.d/unicorn_#{node['app']['name']}" do
+  source "webapp/unicorn.sh.erb"
+  mode 0755
   owner node['user']
-  mode '0666'
-  action :create
+  group node['group']
 end
 
-# execute 'unicorn_rails -c config/unicorn.rb -D' do
-#   cwd "#{node.webdir}/app"
-#   # not_if 'bundle check' # This is not run inside /myapp
-#   user "compass-webapp"
-# end
+# add init script link
+execute "update-rc.d unicorn_#{node['app']['name']} defaults" do
+  not_if "ls /etc/rc2.d | grep unicorn_#{node['app']['name']}"
+end
 
 postgresql_database 'compass_db_prod' do
   connection(
@@ -176,4 +181,11 @@ postgresql_database_user 'compass_db_user' do
   password node['postgresql']['password']['postgres']
   privileges [:all]
   action :create
+end
+
+redis_instance "datastore" do
+  port 8866
+  data_dir "/mnt/redis/datastore"
+  master master_node
+  nofile 16384
 end
