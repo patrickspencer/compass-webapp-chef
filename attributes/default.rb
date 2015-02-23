@@ -1,11 +1,8 @@
 default['user']              = 'compass_webapp'
 default['group']             = 'www-data'
-# default['nodejs']['dir']     = '/usr/local'
-# default['nodejs']['version'] = '0.12.0'
-default['nodejs']['install_method'] = 'binary'
 
 default['ruby']['version']   = '2.1.5'
-default['redis']['version']  = '2.8.13'
+default['redis']['version']  = '2.8.19'
 default['redis']['dir']  = '/mnt/redis'
 default['nginx']['version']  = '1.2.3'
 default['nginx']['default_site_enabled']  = 'true'
@@ -18,14 +15,17 @@ default['app'] = {
   :dir  => '/var/www/compass_webapp'
 }
 default['webdir'] = '/var/www/compass_webapp/app'
+# default['postgresql']['version']                         = '9.4'
 
-default['postgresql']['version']                         = '9.4'
-# arch = node['kernel']['machine'] =~ /x86_64/ ? 'x64' : 'x86'
-# package_stub = "node-v#{node['nodejs']['version']}-linux-#{arch}"
-# nodejs_tar = "#{package_stub}.tar.gz"
-# nodejs_url = "http://nodejs.org/dist/v#{node['nodejs']['version']}/#{nodejs_tar}"
-# executable = "#{node['nodejs']['dir']}/bin/node"
-
-
-
-
+default['rbenv']['user_installs'] = [
+  { 'user'    => default['user'],
+    'rubies'  => ['2.1.5'],
+    'global'  => '2.1.5',
+    'gems'    => {
+      '2.1.5'    => [
+        { 'name'    => 'bundler' },
+        { 'name'    => 'rake' }
+      ]
+    }
+  }
+]
